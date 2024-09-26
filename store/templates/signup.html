@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% block title %}Customer Signup{% endblock title %}
+{% block content %}
+
+<div class="container">
+    <div class="row my-3">
+        <div class="col-sm-6 offset-sm-3">
+
+            <h3 class="text-center">Form Registrasi</h3>
+            <form action="/signup" method="post" class="shadow p-4">
+                {% if messages %}
+                {% for message in messages %}
+                <p {% if message.tags %} class="alert alert-{{message.tags}} mb-5 form-control-sm" {% endif %}>{{message}}</p>
+                {% endfor %}
+                {% endif %}
+
+                {% csrf_token %}
+
+                {% if error %}
+                <div class="alert alert-danger form-control-sm" role="alert">
+                    {{error}}
+                </div>
+                {% endif %}
+
+
+
+
+                <div class="form-group">
+                    <label for="" class="form-control-sm">Username</label>
+                    <input type="text" name="username" id="" value="{{value.username}}" class="form-control" placeholder="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="form-control-sm">Password</label>
+                    <input type="password" name="password" id="" class="form-control" placeholder="password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="form-control-sm">Retype-Password</label>
+                    <input type="password" name="retype_password" id="" class="form-control" placeholder="retype-password" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="form-control-sm">E-mail</label>
+                    <input type="email" name="email" id="" value="{{value.email}}" class="form-control" placeholder="e-mail" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="form-control-sm">Date of birth</label>
+                    <input type="date" name="dob" id="" value="{{value.dob}}" class="form-control" placeholder="dd/mm/yyyy" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="gender" class="form-control-sm">Gender</label>
+                    <select name="gender" id="gender" value="{{value.gender}}" class="form-control" required>
+                        <option value="" disabled selected>Select Gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="form-control-sm">Address</label>
+                    <input type="text" name="address" id="" value="{{value.address}}" class="form-control" placeholder="address" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="form-control-sm">City</label>
+                    <input type="text" name="city" id="" value="{{value.city}}" class="form-control" placeholder="city" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="form-control-sm">Contact no.</label>
+                    <input type="text" name="contact_no" id="" value="{{value.contact_no}}" class="form-control" placeholder="contact no." required>
+                </div>
+
+                <div class="form-group">
+                    <label for="" class="form-control-sm">Pay-pal id</label>
+                    <input type="text" name="paypal_id" id="" value="{{value.paypal_id}}" class="form-control" placeholder="pay-pal id" required>
+                </div>
+
+                <div class="form-group pt-4">
+                    <input class="btn btn-sm btn-info" type="submit" value="Submit">
+                    <button type="reset" class="btn btn-sm btn-secondary ml-2">Clear</button>
+                </div>
+                
+                <div class="text-center text-primary fw-bold">
+                    <small class="form-control-sm">Existing user to Toko Alat Kesehatan?</small>
+                    <a href="/login" class="text-danger form-control-sm">Login</a></div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}

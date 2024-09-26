@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
+    <!-- Google Fonts: Roboto (bolder font) -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <title>TOKO ALAT KESEHATAN</title>
+    <style>
+      :root {
+        --navbar-bg-color: #ffb6c1; /* Pink pastel untuk background navbar */
+        --navbar-text-color: #ffffff; /* Putih untuk teks agar kontras */
+        --navbar-link-hover-color: #4682B4; /* Biru tua (Steel Blue) pada hover */
+        --navbar-link-active-color: #5A9BD5; /* Biru lebih terang untuk link aktif */
+        --navbar-shadow: 0 4px 6px -4px rgba(0, 0, 0, 0.1); /* Shadow halus */
+        --search-btn-bg-color: #ffb6c1; /* Pink pastel untuk tombol pencarian */
+        --search-btn-text-color: #ffffff; /* Warna teks putih untuk tombol pencarian */
+        --font-family: "Roboto", sans-serif; /* Font yang lebih tebal */
+      }
+
+      /* Global styles */
+      body {
+        font-family: var(--font-family);
+      }
+
+      /* Navbar styles */
+      nav {
+        background-color: var(--navbar-bg-color) !important;
+        box-shadow: var(--navbar-shadow);
+      }
+
+      /* Navbar brand (logo + TOKO ALAT KESEHATAN) */
+      .navbar-brand {
+        display: flex;
+        align-items: center;
+      }
+      .navbar-brand img {
+        height: 60px;
+      }
+      .navbar-brand .brand-text {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--navbar-text-color);
+        margin-left: 10px; /* Adjust spacing between logo and text */
+      }
+      .navbar-brand .brand-text span {
+        color: #4682B4; /* Steel Blue untuk highlight */
+      }
+
+      /* Navbar nav links */
+      .navbar-nav .nav-link {
+        color: var(--navbar-text-color) !important;
+        font-weight: 700;
+      }
+      .navbar-nav .nav-link:hover {
+        color: var(--navbar-link-hover-color) !important;
+      }
+      .navbar-nav .nav-item.active .nav-link {
+        color: var(--navbar-link-active-color) !important;
+      }
+      .navbar-toggler {
+        border-color: var(--navbar-text-color);
+      }
+
+      /* Search button */
+      .btn-search {
+        background-color: var(--search-btn-bg-color) !important;
+        color: var(--search-btn-text-color) !important;
+      }
+      .btn-search:hover {
+        background-color: #ff9aa2 !important; /* Pink lebih gelap saat hover */
+      }
+
+      /* Layout adjustments for spacing and alignment */
+      .navbar-nav {
+        margin-left: auto;
+      }
+      .nav-item {
+        margin-right: 1rem;
+      }
+
+      /* Center the search bar */
+      .search-container {
+        flex-grow: 1; /* Allow the search container to grow and take up space */
+        display: flex;
+        justify-content: center; /* Center the search form inside the flex container */
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .navbar-nav {
+          margin-left: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+      <a class="navbar-brand" href="/">
+        <img src="{% static 'images/logo.png' %}" class="d-block w-80" alt="...">
+        <div class="brand-text"><span>TOKO ALAT KESEHATAN</span></div>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Container untuk form pencarian -->
+      <div class="search-container">
+        <form class="form-inline"> 
+          <input class="form-control mr-2" type="search" placeholder="Search" aria-label="Search" name="query">
+          <button class="btn btn-search" type="submit">Search</button>
+        </form>
+      </div>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto"> <!-- Menu berada di sebelah kanan -->
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Home</a>
+          </li>
+          {% if request.session %}
+          <li class="nav-item">
+            <a class="nav-link" href="/show_cart">Cart<span class="badge badge-danger ml-1">{{totalitem}}</span></a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> {{username}} </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="/order">Orders</a> <!-- Pindahkan Orders ke sini -->
+              <a class="dropdown-item" href="/logout">Logout</a>
+            </div>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/signup">Signup</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+    {% block content %}
+      <!-- Contoh tombol Check Out -->
+      <button id="checkoutButton" class="btn btn-primary">Check Out</button>
+    {% endblock %}
+
+    <!-- Modal Checkout -->
+    <div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-labelledby="checkoutModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="checkoutModalLabel">Checkout</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Apakah Anda ingin melanjutkan ke pembayaran?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
+            <button type="button" class="btn btn-primary">Buat Pembayaran</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+    <script>
+      // Tambahkan event listener untuk tombol checkout
+      document.addEventListener("DOMContentLoaded", function() {
+        const checkoutButton = document.querySelector("#checkoutButton");
+        if (checkoutButton) {
+          checkoutButton.addEventListener("click", function() {
+            $('#checkoutModal').modal('show'); // Tampilkan modal
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
